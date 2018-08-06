@@ -71,7 +71,7 @@ export const CATEGORIES = [
 	},
 	{
 		value: 17,
-		name: "Science &amp; Nature"
+		name: "Science & Nature"
 	},
 	{
 		value: 18,
