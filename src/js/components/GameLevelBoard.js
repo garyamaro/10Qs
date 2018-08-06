@@ -21,6 +21,26 @@ class ConnectedGameLevelBoard extends Component {
 		}
 	} 
 
+	fetchQuestions = () => {
+		const { category, difficulty } = this.state;
+		const API_URL = OPENTDB_API_URL
+					  + ((category === "any") ? "" : ("&category=" + category))
+					  + ((difficulty === "any") ? "" : ("&difficulty=" + difficulty));
+		return fetch(API_URL)
+			.then(result => result.json())
+			.then(data => {
+				return data.results;
+			});
+	}
+
+	handleChangeCategory = (e) => {
+		this.setState({ category: e.target.value });
+	}
+
+	handleChangeDifficulty = (e) => {
+		this.setState({ difficulty: e.target.value });
+	}
+
 	handleSubmit = () => {
 		this.props.isLoading(true);
 		setTimeout(() => {
@@ -36,18 +56,6 @@ class ConnectedGameLevelBoard extends Component {
 		
 	}
 
-	fetchQuestions = () => {
-		const { category, difficulty } = this.state;
-		const API_URL = OPENTDB_API_URL
-					  + ((category === "any") ? "" : ("&category=" + category))
-					  + ((difficulty === "any") ? "" : ("&difficulty=" + difficulty));
-		return fetch(API_URL)
-			.then(result => result.json())
-			.then(data => {
-				return data.results;
-			});
-	}
-
 	render(){
 		return (
 			<div className="game-level-board">
@@ -55,7 +63,7 @@ class ConnectedGameLevelBoard extends Component {
 				<br/>
 				<div className="form-group">
 			    	<label htmlFor="category">Select Category</label>
-			      	<select name="category" className="form-control" onChange={ (e) => this.setState({ category: e.target.value }) }>
+			      	<select name="category" className="form-control" onChange={ this.handleChangeCategory  }>
 						{CATEGORIES.map( category => 
 							<option value={ category.value } key={ category.value }> { category.name } </option> 
 						)}
@@ -63,7 +71,7 @@ class ConnectedGameLevelBoard extends Component {
 					<br/>
 					<br/>
 					<label htmlFor="difficulty">Select Difficulty</label>
-			      	<select name="difficulty" className="form-control" onChange={ (e) => this.setState({ difficulty: e.target.value }) }>
+			      	<select name="difficulty" className="form-control" onChange={ this.handleChangeDifficulty }>
 						{DIFFICULTIES.map( difficulty => 
 							<option value={ difficulty.value } key={ difficulty.value }> { difficulty.name } </option> 
 						)}

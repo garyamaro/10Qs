@@ -76,7 +76,6 @@ const ConnectedQuestionBoard = ({question, questionNumber, nextQuestion}) => {
 			<p dangerouslySetInnerHTML={{ __html: question.question }}></p>
 			{answers.map((answer, i) => 
 				<AnswerButton
-					className="btn" 
 					key={ ids[i] } 
 					onClick={ handleButtonClick } 
 					value={ answer } 
