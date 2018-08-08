@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import uuid from 'uuid/v4';
 import AnswerButton from "./AnswerButton";
 
 class QuestionBoard extends Component {
