@@ -14,26 +14,13 @@ import TotalScoreBoard from "./TotalScoreBoard";
 import Loading from "./Loading";
 import { goToGameLevel, startGame, isLoading, nextQuestion, exitGame } from "../actions/index";
 
-const mapsStateToProps = state => {
-	return { 
-		page: state.page,
-		question: state.currentQuestion,
-		questionNumber: state.currentQuestionNumber,
-		totalScore: state.totalScore
-	};
+const mapsStateToProps = ({page, currentQuestion, currentQuestionNumber, totalScore}) => {
+	return {page, currentQuestion, currentQuestionNumber, totalScore };
 };
 
-const mapDispatchToProps = dispatch => {
-	return {
-		goToGameLevel: () => dispatch(goToGameLevel()),
-		startGame: questions => dispatch(startGame(questions)),
-		isLoading: () => dispatch(isLoading()),
-		nextQuestion: bool => dispatch(nextQuestion(bool)),
-		exitGame: () => dispatch(exitGame())
-	};
-};
+const mapDispatchToProps = {goToGameLevel, startGame, isLoading, nextQuestion, exitGame};
 
-const ConnectedApp  = ({ page, goToGameLevel, startGame, isLoading, question, questionNumber, nextQuestion, totalScore, exitGame }) => {
+const App  = ({ page, goToGameLevel, startGame, isLoading, currentQuestion, currentQuestionNumber, nextQuestion, totalScore, exitGame }) => {
 	return (
 		<div className="container">
 			{ 
@@ -45,8 +32,8 @@ const ConnectedApp  = ({ page, goToGameLevel, startGame, isLoading, question, qu
 							isLoading={isLoading}
 							goToGameLevel={goToGameLevel}/>,
 					QUESTION_BOARD: <QuestionBoard 
-							question={question} 
-							questionNumber={questionNumber} 
+							currentQuestion={currentQuestion} 
+							currentQuestionNumber={currentQuestionNumber} 
 							nextQuestion={nextQuestion}/>,
 					TOTAL_SCORE_BOARD: <TotalScoreBoard 
 							totalScore={totalScore} 
@@ -59,6 +46,7 @@ const ConnectedApp  = ({ page, goToGameLevel, startGame, isLoading, question, qu
 	);
 };
 
-const App = connect(mapsStateToProps, mapDispatchToProps)(ConnectedApp);
-
-export default App;
+export default connect(
+	mapsStateToProps, 
+	mapDispatchToProps
+)(App);
