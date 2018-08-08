@@ -1,20 +1,11 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { startGame, isLoading } from "../actions/index";
 import { CATEGORIES, DIFFICULTIES } from "../constants/select-input-options";
 import { OPENTDB_API_URL } from "../constants/api-urls";
 
-const mapDispatchToProps = dispatch => {
-	return {
-		startGame: questions => dispatch(startGame(questions)),
-		isLoading: bool => dispatch(isLoading(bool))
-	};
-};
+class GameLevelBoard extends Component {
 
-class ConnectedGameLevelBoard extends Component {
-
-	constructor(props) {
-		super(props);
+	constructor() {
+		super();
 		this.state = {
 			category: "any",
 			difficulty: "any"
@@ -30,6 +21,10 @@ class ConnectedGameLevelBoard extends Component {
 			.then(result => result.json())
 			.then(data => {
 				return data.results;
+			})
+			.catch(err => {
+				alert('Error fetching data: ' + err);
+				return;
 			});
 	}
 
@@ -42,15 +37,14 @@ class ConnectedGameLevelBoard extends Component {
 	}
 
 	handleSubmit = () => {
-		this.props.isLoading(true);
+		this.props.isLoading();
 		setTimeout(() => {
 			this.fetchQuestions().then((questions) => {
-				this.props.isLoading(false);
 				if(questions.length == 10){
 					return this.props.startGame(questions);
 				}
 				alert('No sufficient questions! Please try again with another combination of category and difficulty.');
-				return;
+				return this.props.goToGameLevel();
 			});
 		}, 1000);
 		
@@ -84,7 +78,5 @@ class ConnectedGameLevelBoard extends Component {
 		)
 	}
 }
-
-const GameLevelBoard = connect(null, mapDispatchToProps)(ConnectedGameLevelBoard);
 
 export default GameLevelBoard;

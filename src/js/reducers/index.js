@@ -2,16 +2,16 @@ import {
 	GO_TO_GAME_LEVEL, 
 	START_GAME,
 	IS_LOADING,
-	ADD_SCORE,
 	NEXT_QUESTION,
-	EXIT_GAME
+	EXIT_GAME,
 } from "../constants/action-types";
 
 import {
 	HOME_BOARD,
 	GAME_LEVEL_BOARD,
 	QUESTION_BOARD,
-	TOTAL_SCORE_BOARD
+	TOTAL_SCORE_BOARD,
+	LOADING
 } from "../constants/page-names";
 
 const initialState = {
@@ -20,7 +20,9 @@ const initialState = {
 	currentQuestionNumber: 0,
 	isLoading: false,
 	totalScore: 0,
-	page: HOME_BOARD
+	page: HOME_BOARD,
+	showAnswer: false,
+	answer: null
 };
 
 const rootReducer = ( state = initialState, action) => {
@@ -32,14 +34,13 @@ const rootReducer = ( state = initialState, action) => {
 			};
 		case START_GAME:
 			return { ...state, 
-				isLoading: false, 
 				page: QUESTION_BOARD, 
 				questions: action.payload, 
 				currentQuestion: action.payload[0], currentQuestionNumber: 1
 			};
 		case IS_LOADING:
 			return { ...state, 
-				isLoading: action.payload 
+				page: LOADING
 			};
 		case NEXT_QUESTION: 
 			if(state.questions.indexOf(state.currentQuestion) == 9){
@@ -51,7 +52,7 @@ const rootReducer = ( state = initialState, action) => {
 			return { ...state, 
 				totalScore: state.totalScore + (action.payload ?  1 : 0), 
 				currentQuestion: state.questions[state.questions.indexOf(state.currentQuestion) + 1],
-				currentQuestionNumber: state.currentQuestionNumber + 1
+				currentQuestionNumber: state.currentQuestionNumber + 1,
 			};
 		case EXIT_GAME:
 			return { ...state,

@@ -1,20 +1,7 @@
-import React from "react";
-import { connect } from "react-redux";
-import { goToGameLevel, exitGame } from "../actions/index";
+import React from "react";;
 import { MESSAGES } from "../constants/total-score-messages";
 
-const mapStateToProps = state => {
-	return { totalScore: state.totalScore };
-}
-
-const mapDispatchToProps = dispatch => {
-	return { 
-		goToGameLevel: () => dispatch(goToGameLevel()),
-		exitGame: () => dispatch(exitGame())
-	};
-}
-
-const ConnectedTotalScoreBoard = ({ totalScore, goToGameLevel, exitGame }) => {
+const TotalScoreBoard = ({ totalScore, goToGameLevel, exitGame }) => {
 	return (
 		<div className="total-score-board">
 			<h1 className="text-success">Total Score: { totalScore }</h1>
@@ -34,7 +21,5 @@ const ConnectedTotalScoreBoard = ({ totalScore, goToGameLevel, exitGame }) => {
 		</div>
 	);
 }
-
-const TotalScoreBoard = connect(mapStateToProps, mapDispatchToProps)(ConnectedTotalScoreBoard);
 
 export default TotalScoreBoard;

@@ -1,91 +1,53 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { Component } from "react";
 import uuid from 'uuid/v4';
-import { nextQuestion } from "../actions/index";
 import AnswerButton from "./AnswerButton";
 
-const mapStateToProps = state => {
-	return { 
-		question: state.currentQuestion,
-		questionNumber: state.currentQuestionNumber
-	};
-}
+class QuestionBoard extends Component {
 
-const mapDispatchToProps = dispatch => {
-	return { nextQuestion: (bool) => dispatch(nextQuestion(bool))};
-}
-
-const ConnectedQuestionBoard = ({question, questionNumber, nextQuestion}) => {
-	let answers = [...question.incorrect_answers, question.correct_answer];
-	answers = (question.type == "boolean") ? answers : answers.sort(); 
-	let ids = Array(4).fill().map((i) => uuid());
-
-	//timer
-	let timeleft = 15;
-	const timer = setInterval(() => {
-		timeleft--;
-		document.getElementById("countdowntimer-" + questionNumber).textContent = timeleft;
-		if(timeleft <= 0){
-			clearInterval(timer);
-			disableAllAnswers();
-			showCorrectAnswer();
-			goToNextQuestion(false);
-		}
-	}, 1000);
-	//end timer
-
-	const disableAllAnswers = () => {
-		for(let i = 0; i < ids.length; i++){
-			document.getElementById(ids[i]).disabled = true;
-			document.getElementById(ids[i]).style.pointerEvents = "none";
-		}
-	}
-
-	const showCorrectAnswer = () => {
-		const answerId = answers.indexOf(question.correct_answer);
-		document.getElementById(ids[answerId]).style.backgroundColor = "green";
-		document.getElementById(ids[answerId]).style.color = "black";
+	constructor(){
+		super();
+		this.state = {
+			showAnswer: false,
+			timeleft: 0
+		};
 	}
 
 	//bool: is answer correct?
-	const goToNextQuestion = (bool) => {
+	goToNextQuestion = (bool) => {
 		setTimeout(() => {
-			document.getElementById("countdowntimer-" + questionNumber).textContent = 15;
-			nextQuestion(bool);
+			this.props.nextQuestion(bool);
 		}, 2000);
 	}
 
-	const handleButtonClick = (e) => {
+	handleButtonClick = (e) => {
 		const answer = e.currentTarget.value;
 
-		clearInterval(timer);
-		disableAllAnswers();
-		showCorrectAnswer();
-
-		if(answer != question.correct_answer){
-			document.getElementById(e.currentTarget.id).style.backgroundColor = "red";
-			document.getElementById(e.currentTarget.id).style.color = "white";
-		}
-
-		goToNextQuestion((answer == question.correct_answer));
+		this.setState({showAnswer: true});
+		setTimeout(() => {
+			this.setState({showAnswer: false});
+			this.props.nextQuestion(answer == this.props.question.correct_answer);
+		}, 2000);
+		
 	}
 
-	return (
-		<div className="question-board">
-			<p>Question { questionNumber } of 10 ||  <span id={ "countdowntimer-" + questionNumber}>{ timeleft }</span> seconds</p>
-			<p dangerouslySetInnerHTML={{ __html: question.question }}></p>
-			{answers.map((answer, i) => 
-				<AnswerButton
-					key={ ids[i] } 
-					onClick={ handleButtonClick } 
-					value={ answer } 
-					id={ ids[i] }
-				/>
-			)}
-		</div>
-	);
+	render() {
+		let answers = [...this.props.question.incorrect_answers, this.props.question.correct_answer].sort();
+		return (
+			<div className="question-board">
+				<p>Question { this.props.questionNumber } of 10</p>
+				<p dangerouslySetInnerHTML={{ __html: this.props.question.question }}></p>
+				{answers.map((answer, i) => 
+					<AnswerButton
+						key={ answer } 
+						onClick={ this.handleButtonClick } 
+						value={ answer }
+						showAnswer={ this.state.showAnswer }
+						isCorrect={ answer ==  this.props.question.correct_answer}
+					/>
+				)}
+			</div>
+		);
+	}
 }
-
-const QuestionBoard =  connect(mapStateToProps, mapDispatchToProps)(ConnectedQuestionBoard);
 
 export default QuestionBoard;
