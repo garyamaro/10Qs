@@ -4,12 +4,10 @@ import { CATEGORIES, DIFFICULTIES } from "../constants/select-input-options";
 import { OPENTDB_API_URL } from "../constants/api-urls";
 import { goToGameLevel, startGame, isLoading } from "../actions/index";
 
-const mapDispatchToProps = dispatch => {
-	return {
-		goToGameLevel: () => dispatch(goToGameLevel()),
-		startGame: questions => dispatch(startGame(questions)),
-		isLoading: () => dispatch(isLoading())
-	};
+const mapDispatchToProps =  {
+	goToGameLevel,
+	startGame,
+	isLoading
 };
 
 class GameLevelBoard extends Component {
@@ -47,14 +45,15 @@ class GameLevelBoard extends Component {
 	}
 
 	handleSubmit = () => {
-		this.props.isLoading();
+		const {isLoading, startGame, goToGameLevel} = this.props;
+		isLoading();
 		setTimeout(() => {
 			this.fetchQuestions().then((questions) => {
 				if(questions.length == 10){
-					return this.props.startGame(questions);
+					return startGame(questions);
 				}
 				alert('No sufficient questions! Please try again with another combination of category and difficulty.');
-				return this.props.goToGameLevel();
+				return goToGameLevel();
 			});
 		}, 1000);
 		

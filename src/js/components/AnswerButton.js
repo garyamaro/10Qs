@@ -1,16 +1,16 @@
 import React from "react";
 
-const AnswerButton = ({showAnswer, isCorrect, ...props})  => {
+const AnswerButton = ({showAnswer, isCorrect, onClick, value})  => {
+	let disabled = false;
+	let bgColor = '';
 	if(showAnswer){
-		return (
-			<button type="button" className={ 'btn text-white ' + (isCorrect ? 'bg-success' : 'bg-danger')} disabled>
-				<p className={ props.id + 'p'} dangerouslySetInnerHTML={{ __html: props.value }}></p>
-			</button>
-		);
+		disabled = true;
+		bgColor = 'text-white ' + ( isCorrect ? 'bg-success' : 'bg-danger');
 	}
+
 	return (
-		<button type="button" className="btn"  {...props}>
-			<p className={ props.id + 'p'} dangerouslySetInnerHTML={{ __html: props.value }}></p>
+		<button type="button" className={ 'btn ' + bgColor}  onClick={ onClick } value={ value } disabled={ disabled }>
+			<p dangerouslySetInnerHTML={{ __html: value }}></p>
 		</button>
 	);
 }

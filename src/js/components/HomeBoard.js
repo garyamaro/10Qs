@@ -2,9 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { goToGameLevel } from "../actions/index";
 
-const mapDispatchToProps = dispatch => {
-	return {goToGameLevel: () => dispatch(goToGameLevel())}
-}
+const mapDispatchToProps =  {goToGameLevel};
+
 const HomeBoard = ({ goToGameLevel }) => {
 	return (
 		<div className="home-board">

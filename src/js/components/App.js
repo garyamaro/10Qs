@@ -13,9 +13,9 @@ import QuestionBoard from "./QuestionBoard";
 import TotalScoreBoard from "./TotalScoreBoard";
 import Loading from "./Loading";
 
-const mapsStateToProps = state => {
+const mapsStateToProps = ({page}) => {
 	return { 
-		page: state.page
+		page
 	};
 };
 
