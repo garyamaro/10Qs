@@ -1,6 +1,16 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { CATEGORIES, DIFFICULTIES } from "../constants/select-input-options";
 import { OPENTDB_API_URL } from "../constants/api-urls";
+import { goToGameLevel, startGame, isLoading } from "../actions/index";
+
+const mapDispatchToProps = dispatch => {
+	return {
+		goToGameLevel: () => dispatch(goToGameLevel()),
+		startGame: questions => dispatch(startGame(questions)),
+		isLoading: () => dispatch(isLoading())
+	};
+};
 
 class GameLevelBoard extends Component {
 
@@ -79,4 +89,4 @@ class GameLevelBoard extends Component {
 	}
 }
 
-export default GameLevelBoard;
+export default connect(null, mapDispatchToProps)(GameLevelBoard);

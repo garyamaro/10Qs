@@ -1,5 +1,20 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { nextQuestion } from "../actions/index";
 import AnswerButton from "./AnswerButton";
+
+const mapsStateToProps = state => {
+	return { 
+		question: state.currentQuestion,
+		questionNumber: state.currentQuestionNumber
+	};
+};
+
+const mapDispatchToProps = dispatch => {
+	return {
+		nextQuestion: bool => dispatch(nextQuestion(bool))
+	};
+};
 
 class QuestionBoard extends Component {
 
@@ -41,4 +56,4 @@ class QuestionBoard extends Component {
 	}
 }
 
-export default QuestionBoard;
+export default connect(mapsStateToProps, mapDispatchToProps)(QuestionBoard);
