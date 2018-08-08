@@ -16,7 +16,6 @@ import { goToGameLevel, startGame, isLoading, nextQuestion, exitGame } from "../
 
 const mapsStateToProps = state => {
 	return { 
-		loading: state.isLoading,
 		page: state.page,
 		question: state.currentQuestion,
 		questionNumber: state.currentQuestionNumber,
@@ -34,7 +33,7 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-const ConnectedApp  = ({ loading, page, goToGameLevel, startGame, isLoading, question, questionNumber, nextQuestion, totalScore, exitGame }) => {
+const ConnectedApp  = ({ page, goToGameLevel, startGame, isLoading, question, questionNumber, nextQuestion, totalScore, exitGame }) => {
 	return (
 		<div className="container">
 			{ 

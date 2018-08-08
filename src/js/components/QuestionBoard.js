@@ -6,16 +6,8 @@ class QuestionBoard extends Component {
 	constructor(){
 		super();
 		this.state = {
-			showAnswer: false,
-			timeleft: 0
+			showAnswer: false
 		};
-	}
-
-	//bool: is answer correct?
-	goToNextQuestion = (bool) => {
-		setTimeout(() => {
-			this.props.nextQuestion(bool);
-		}, 2000);
 	}
 
 	handleButtonClick = (e) => {

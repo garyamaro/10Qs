@@ -18,7 +18,6 @@ const initialState = {
 	questions: [],
 	currentQuestion: null,
 	currentQuestionNumber: 0,
-	isLoading: false,
 	totalScore: 0,
 	page: HOME_BOARD,
 	showAnswer: false,
