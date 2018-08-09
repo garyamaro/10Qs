@@ -37,14 +37,15 @@ class GameLevelBoard extends Component {
 	}
 
 	handleSubmit = () => {
-		this.props.isLoading();
+		const { isLoading, startGame, goToGameLevel} = this.props;
+		isLoading();
 		setTimeout(() => {
 			this.fetchQuestions().then((questions) => {
 				if(questions.length == 10){
-					return this.props.startGame(questions);
+					return startGame(questions);
 				}
 				alert('No sufficient questions! Please try again with another combination of category and difficulty.');
-				return this.props.goToGameLevel();
+				return goToGameLevel();
 			});
 		}, 1000);
 		
