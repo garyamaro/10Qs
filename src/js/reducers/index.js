@@ -20,7 +20,6 @@ const initialState = {
 	currentQuestionNumber: 0,
 	totalScore: 0,
 	page: HOME_BOARD,
-	showAnswer: false,
 	answer: null
 };
 

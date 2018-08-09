@@ -4,9 +4,14 @@ import { nextQuestion } from "../actions/index";
 import AnswerButton from "./AnswerButton";
 
 const mapsStateToProps = ({currentQuestion, currentQuestionNumber}) => {
+	const { question, correct_answer: correctAnswer, incorrect_answers } = currentQuestion;
+	const answers = incorrect_answers.concat(correctAnswer).sort();
+
 	return {
-		currentQuestion,
-		currentQuestionNumber
+		question,
+		correctAnswer,
+		questionNumber: currentQuestionNumber,
+		answers
 	};
 };
 
@@ -24,31 +29,30 @@ class QuestionBoard extends Component {
 	}
 
 	handleButtonClick = (e) => {
-		const {nextQuestion, currentQuestion} = this.props;
+		const {nextQuestion, question, correctAnswer} = this.props;
 		const answer = e.currentTarget.value;
 
 		this.setState({showAnswer: true});
 		setTimeout(() => {
 			this.setState({showAnswer: false});
-			nextQuestion(answer == currentQuestion.correct_answer);
+			nextQuestion(answer == correctAnswer);
 		}, 2000);
 		
 	}
 
 	render() {
-		const {currentQuestion, currentQuestionNumber} = this.props;
-		let answers = currentQuestion.incorrect_answers.concat(currentQuestion.correct_answer).sort();
+		const {question, questionNumber, answers, correctAnswer} = this.props;
 		return (
 			<div className="question-board">
-				<p>Question { currentQuestionNumber } of 10</p>
-				<p dangerouslySetInnerHTML={{ __html: currentQuestion.question }}></p>
+				<p>Question { questionNumber } of 10</p>
+				<p dangerouslySetInnerHTML={{ __html: question }}></p>
 				{answers.map((answer, i) => 
 					<AnswerButton
 						key={ answer } 
 						onClick={ this.handleButtonClick } 
 						value={ answer }
 						showAnswer={ this.state.showAnswer }
-						isCorrect={ answer ==  currentQuestion.correct_answer}
+						isCorrect={ answer ==  correctAnswer}
 					/>
 				)}
 			</div>
